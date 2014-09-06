@@ -60,10 +60,7 @@ void UARTsb(uint8_t val); // Send byte over UART
 
 void Sleep();
 
-void EnableADC();
-void DisableADC();
-
-uint16_t ReadTemp();
+uint16_t ReadTemp(); // Read temperature by digitizing the voltage of the potential divider formed by the thermistor
 
 void LEDOn(uint8_t led); // led is in the range 0-7
 void LEDOff(uint8_t led); // led is in the range 0-7

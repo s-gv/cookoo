@@ -83,12 +83,6 @@ void InitADC() {
     P1OUT &= ~(1 << 5); // Turn off power to the resistor divider
 }
 
-void SetupTimerToWakeUpCPU(uint16_t val) {
-    TACCR0 = val; // About 0.1 sec
-    TACCTL0 |= CCIE;
-    TACTL = TASSEL_1 | MC_1; // Use ACLK as source and start
-}
-
 void EnableInterrupts() {
     __enable_interrupt();
 }
@@ -219,36 +213,6 @@ void UARTsb(uint8_t val) {
 
 void Sleep() {
     LPM3; // Goto sleep
-}
-
-void EnableADC() {
-    ADC10CTL0 |= ENC;
-}
-
-void DisableADC() {
-    ADC10CTL0 &= ~ENC;
-}
-void ADCSetChannel(uint8_t ch) {
-    ADC10CTL1 = (ch << 12) | ADC10DIV_3;
-}
-void PowerOnPOT() {
-    P1DIR |= BIT3; // P1.3 is connected to upper side of POT for low-power POT sensing
-}
-void PowerOffPOT() {
-    P1DIR &= ~BIT3; // P1.3 is connected to upper side of POT for low-power POT sensing
-}
-
-uint8_t ReadADC() {
-    uint8_t value;
-    ADC10CTL0 |= ADC10SC; // Sampling and conversion start
-    LPM3; // Goto sleep
-    value = ADC10MEM >> 2; // get the upper 8 bits
-    return value;
-}
-
-uint8_t ReadPushButton() {
-    // Read P1.2
-    return (P1IN & (1 << 2));
 }
 
 void LEDOn(uint8_t led) {
