@@ -31,7 +31,7 @@ TARGET = msp430cookoo
 
 MCU = msp430g2232
 
-PROGRAMMER = rf2500 # TI launchpad is used a programmer
+PROGRAMMER = rf2500 # Use TI MSP430 launchpad as flash programmer
 
 OBJDIR = obj
 INCDIR = inc
