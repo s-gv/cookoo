@@ -13,7 +13,7 @@ Quantity x Part Number
 
 8x Red LED (SMD 0402)
 
-1x 10k 1/16 W NTC Thermistor (Wire terminated)
+1x 10k 1/16 W NTC Thermistor (Wire terminated, Upto 150 degree Celcius)
 
 1x 10R, 1/16 W (SMD 0402)
 8x 390R, 1/16 W (SMD 0402)
