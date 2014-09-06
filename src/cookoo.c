@@ -42,81 +42,81 @@ uint16_t tempLow[NLOW];
 uint16_t tempHi[NHI];
 
 void ShowStatus() {
-	uint8_t i;
-	AllLEDOff();
-	for (i = 0; i < whistleCount; i++) {
-		LEDOn(i);
-	}
+    uint8_t i;
+    AllLEDOff();
+    for (i = 0; i < whistleCount; i++) {
+        LEDOn(i);
+    }
 }
 void CancelStatus() {
-	AllLEDOff();
+    AllLEDOff();
 }
 
 void MainLoop(uint8_t capPushA, uint8_t capPushB, uint16_t tempSensor) {
-	if ((capPushA == 1) || (capPushB == 1)) {
-		beepTime = 0;
-		if (noButtonPressTime < STATUS_CANCEL_THRESH) {
-			if (capPushA == 1) {
-				if (whistleCount < MAX_WHISTLE_COUNT) {
-					whistleCount++;
-				}
-			} else if (capPushB == 1) {
-				if (whistleCount > 0) {
-					whistleCount--;
-				}
-			}
-		}
-		ShowStatus();
-		noButtonPressTime = 0;
-	} else {
-		if (noButtonPressTime < 250)
-			noButtonPressTime++;
-		if ((noButtonPressTime > STATUS_BLINK_THRESH
-				&& noButtonPressTime < STATUS_CANCEL_THRESH2)
-				|| noButtonPressTime < STATUS_CANCEL_THRESH) {
-			ShowStatus();
-		} else {
-			CancelStatus();
-		}
-	}
-	time++;
-	downSample++;
-	if (downSample == 4) {
-		downSample = 0;
-		uint16_t val = tempSensor;
+    if ((capPushA == 1) || (capPushB == 1)) {
+        beepTime = 0;
+        if (noButtonPressTime < STATUS_CANCEL_THRESH) {
+            if (capPushA == 1) {
+                if (whistleCount < MAX_WHISTLE_COUNT) {
+                    whistleCount++;
+                }
+            } else if (capPushB == 1) {
+                if (whistleCount > 0) {
+                    whistleCount--;
+                }
+            }
+        }
+        ShowStatus();
+        noButtonPressTime = 0;
+    } else {
+        if (noButtonPressTime < 250)
+            noButtonPressTime++;
+        if ((noButtonPressTime > STATUS_BLINK_THRESH
+                && noButtonPressTime < STATUS_CANCEL_THRESH2)
+                || noButtonPressTime < STATUS_CANCEL_THRESH) {
+            ShowStatus();
+        } else {
+            CancelStatus();
+        }
+    }
+    time++;
+    downSample++;
+    if (downSample == 4) {
+        downSample = 0;
+        uint16_t val = tempSensor;
 
-		uint32_t val_lo = mafilt(tempLow, val, NLOW);
-		int32_t val_hi = (NHI) * val_lo - mafilt(tempHi, val_lo, NHI);
-		if (val > 100 && val_hi < -1000) {
-			// detected whistle
-			whistleOneCount++;
-		} else {
-			if (whistleOneCount > 12) {
-				// Whistle detection complete !
-				//sb(128);
-				if (whistleCount > 0) {
-					whistleCount--;
-					if (whistleCount == 0) {
-						beepTime = 767;
-					}
-				}
-				ShowStatus();
-				noButtonPressTime = 0;
-			}
-			whistleOneCount = 0;
-		}
-		//sb(10);
-	}
+        uint32_t val_lo = mafilt(tempLow, val, NLOW);
+        int32_t val_hi = (NHI) * val_lo - mafilt(tempHi, val_lo, NHI);
+        if (val > 100 && val_hi < -1000) {
+            // detected whistle
+            whistleOneCount++;
+        } else {
+            if (whistleOneCount > 12) {
+                // Whistle detection complete !
+                //sb(128);
+                if (whistleCount > 0) {
+                    whistleCount--;
+                    if (whistleCount == 0) {
+                        beepTime = 767;
+                    }
+                }
+                ShowStatus();
+                noButtonPressTime = 0;
+            }
+            whistleOneCount = 0;
+        }
+        //sb(10);
+    }
 
-	if (beepTime > 0) {
-		if( (beepTime & 0x0F) > 10 ) {
-			BuzzerOn();
-		} else {
-			BuzzerOff();
-		}
-		beepTime--;
-	} else {
-		BuzzerOff();
-	}
+    if (beepTime > 0) {
+        if( (beepTime & 0x0F) > 10 ) {
+            BuzzerOn();
+        } else {
+            BuzzerOff();
+        }
+        beepTime--;
+    } else {
+        BuzzerOff();
+    }
 
 }

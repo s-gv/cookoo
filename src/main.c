@@ -1,5 +1,3 @@
-#include <msp430.h>
-#include <inttypes.h>
 /*
 Copyright (c) 2014, Sagar G V (sagar.writeme@gmail.com) and Dhruv Saxena (dhruvrai23@gmail.com)
 All rights reserved.
@@ -30,37 +28,40 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include <msp430.h>
+#include <inttypes.h>
+
 #include "cappush.h"
 #include "cookoo.h"
 #include "uart.h"
 #include "hal.h"
 
 int main(void) {
-	uint16_t tempSensor;
-	uint8_t capPushA, capPushB;
+    uint16_t tempSensor;
+    uint8_t capPushA, capPushB;
 
-	InitWDT();
-	InitCLOCK();
-	InitUART();
-	InitLED();
-	InitADC();
-	InitBuzzer();
+    InitWDT();
+    InitCLOCK();
+    InitUART();
+    InitLED();
+    InitADC();
+    InitBuzzer();
 
-	EnableInterrupts();
+    EnableInterrupts();
 
-	while (1) {
-		capPushA = senseCapPushA();
-		capPushB = senseCapPushB();
-		tempSensor = ReadTemp();
+    while (1) {
+        capPushA = senseCapPushA();
+        capPushB = senseCapPushB();
+        tempSensor = ReadTemp();
 
-		SetupWDTToWakeUpCPU();
+        SetupWDTToWakeUpCPU();
 
-		MainLoop(capPushA, capPushB, tempSensor);
+        MainLoop(capPushA, capPushB, tempSensor);
 
-		Sleep(); // Each Sleep() sleeps for about 16 ms at 32 kHz before waking
-		Sleep();
-		Sleep();
-		Sleep();
-	}
-	return 0;
+        Sleep(); // Each Sleep() sleeps for about 16 ms at 32 kHz before waking
+        Sleep();
+        Sleep();
+        Sleep();
+    }
+    return 0;
 }

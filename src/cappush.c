@@ -34,58 +34,58 @@ uint16_t capPushABuf[N_CAP_PUSH_BUF], capPushBBuf[N_CAP_PUSH_BUF];
 uint8_t backOffA0, backOffA1, backOffB0, backOffB1;
 
 uint8_t senseCapPushA() {
-	uint8_t status = 0;
-	uint16_t val = readCapPushA();
-	uint16_t filt = mafilt(capPushABuf, val, N_CAP_PUSH_BUF);
-	int16_t hp_filt = N_CAP_PUSH_BUF * val - filt;
+    uint8_t status = 0;
+    uint16_t val = readCapPushA();
+    uint16_t filt = mafilt(capPushABuf, val, N_CAP_PUSH_BUF);
+    int16_t hp_filt = N_CAP_PUSH_BUF * val - filt;
 
-	//sval(hp_filt);
+    //sval(hp_filt);
 
-	if (hp_filt < -THRESH1) {
-		if (!backOffA0) {
-			status = 1;
-			backOffA0 = 1;
-		}
-	} else if (hp_filt > -THRESH2) {
-		backOffA0 = 0;
-	}
+    if (hp_filt < -THRESH1) {
+        if (!backOffA0) {
+            status = 1;
+            backOffA0 = 1;
+        }
+    } else if (hp_filt > -THRESH2) {
+        backOffA0 = 0;
+    }
 
-	if (hp_filt > THRESH1) {
-		if (!backOffA1) {
-			status = 2;
-			backOffA1 = 1;
-		}
-	} else if (hp_filt < THRESH2) {
-		backOffA1 = 0;
-	}
+    if (hp_filt > THRESH1) {
+        if (!backOffA1) {
+            status = 2;
+            backOffA1 = 1;
+        }
+    } else if (hp_filt < THRESH2) {
+        backOffA1 = 0;
+    }
 
-	return status;
+    return status;
 }
 uint8_t senseCapPushB() {
-	uint8_t status = 0;
-	uint16_t val = readCapPushB();
-	uint16_t filt = mafilt(capPushBBuf, val, N_CAP_PUSH_BUF);
-	int16_t hp_filt = N_CAP_PUSH_BUF * val - filt;
+    uint8_t status = 0;
+    uint16_t val = readCapPushB();
+    uint16_t filt = mafilt(capPushBBuf, val, N_CAP_PUSH_BUF);
+    int16_t hp_filt = N_CAP_PUSH_BUF * val - filt;
 
-	//sval(hp_filt);
+    //sval(hp_filt);
 
-	if (hp_filt < -THRESH1) {
-		if (!backOffB0) {
-			status = 1;
-			backOffB0 = 1;
-		}
-	} else if (hp_filt > -THRESH2) {
-		backOffB0 = 0;
-	}
+    if (hp_filt < -THRESH1) {
+        if (!backOffB0) {
+            status = 1;
+            backOffB0 = 1;
+        }
+    } else if (hp_filt > -THRESH2) {
+        backOffB0 = 0;
+    }
 
-	if (hp_filt > THRESH1) {
-		if (!backOffB1) {
-			status = 2;
-			backOffB1 = 1;
-		}
-	} else if (hp_filt < THRESH2) {
-		backOffB1 = 0;
-	}
+    if (hp_filt > THRESH1) {
+        if (!backOffB1) {
+            status = 2;
+            backOffB1 = 1;
+        }
+    } else if (hp_filt < THRESH2) {
+        backOffB1 = 0;
+    }
 
-	return status;
+    return status;
 }
