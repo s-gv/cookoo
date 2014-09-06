@@ -40,6 +40,20 @@ void ISR_trap(void) {
     WDTCTL = 0; // Write to WDT with a wrong password to reset CPU
 }
 
+/*
+// If you're using TI's Code Composer for MSP430, replace the above two ISRs with the following ones in comments.
+
+#pragma vector=WDT_VECTOR,ADC10_VECTOR
+__interrupt void ISR(void) {
+	LPM3_EXIT; // Return to active mode
+}
+
+#pragma vector=PORT1_VECTOR,PORT2_VECTOR,NMI_VECTOR,USI_VECTOR,TIMER0_A1_VECTOR,TIMER0_A0_VECTOR
+__interrupt void ISR_trap(void) {
+	WDTCTL = 0; // Write to WDT with a wrong password to reset CPU
+}
+*/
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 void InitBuzzer() {
     P1DIR |= 1 << 0;
