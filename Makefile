@@ -31,6 +31,8 @@ TARGET = msp430cookoo
 
 MCU = msp430g2232
 
+PROGRAMMER = rf2500 # TI launchpad is used a programmer
+
 OBJDIR = obj
 INCDIR = inc
 BINDIR = bin
@@ -48,6 +50,11 @@ INCS := $(wildcard $(INCDIR)/*.h)
 OBJS := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 all: $(BINDIR)/$(TARGET).hex
+
+program: $(BINDIR)/$(TARGET).hex
+	$(info *** Need to be root to access the MSP430 programmer unless you have added a suitable udev rule ***)
+	sudo mspdebug $(PROGRAMMER) "prog $(BINDIR)/$(TARGET).hex" run
+	#For different serial port, say /dev/ttyUSB0: sudo mspdebug -d /dev/ttyUSB0 $(PROGRAMMER) "prog $(BINDIR)/$(TARGET).hex" run
 
 $(BINDIR)/$(TARGET).hex: $(BINDIR)/$(TARGET).elf
 	$(OBJCOPY) -O ihex $< $@
