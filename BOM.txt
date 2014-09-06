@@ -1,0 +1,29 @@
+Quantity x Part Number
+======================
+
+1x MSP430G2232 (TSSOP 20 pin)
+
+1x CR2032 Coin cell battery
+
+1x Buzzer (through hole, continuous > 80 dB indicator buzzer)
+
+1x 32.768 kHz Crystal (through hole)
+
+2x 1N4148 diode (through hole)
+
+8x Red LED (SMD 0402)
+
+1x 10k 1/16 W NTC Thermistor (Wire terminated)
+
+1x 10R, 1/16 W (SMD 0402)
+8x 390R, 1/16 W (SMD 0402)
+1x 680R, 1/16 W (SMD 0402)
+1x 47k, 1/16 W (SMD 0402)
+
+2x 22pF, 5V (SMD 0402, Ceramic)
+1x 470pF, 5V (SMD 0402, Ceramic)
+1x 1nF, 5V (SMD 0402, Ceramic)
+1x 10nF, 5V (SMD 0402, Ceramic)
+1x 100nF, 5V (SMD 0402, Ceramic)
+1x 1uF, 5V (SMD 0402, Ceramic)
+
