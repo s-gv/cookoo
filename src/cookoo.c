@@ -54,23 +54,25 @@ void CancelStatus() {
 
 void MainLoop(uint8_t capPushA, uint8_t capPushB, uint16_t tempSensor) {
     if ((capPushA == 1) || (capPushB == 1)) {
-        beepTime = 0;
-        if (noButtonPressTime < STATUS_CANCEL_THRESH) {
+        beepTime = 0; // Stop beeping the buzzer when the user touches either of the capacitive touch buttons
+        if (noButtonPressTime < STATUS_CANCEL_THRESH) { // Was a cap touch button pressed recently ?
+            // If yes, this press must have been to increase (button A) or decrease (button B) the whistle count
             if (capPushA == 1) {
                 if (whistleCount < MAX_WHISTLE_COUNT) {
-                    whistleCount++;
+                    whistleCount++; // increase the target whistle count
                 }
             } else if (capPushB == 1) {
                 if (whistleCount > 0) {
-                    whistleCount--;
+                    whistleCount--; // decrease the target whistle count
                 }
             }
         }
-        ShowStatus();
-        noButtonPressTime = 0;
+        ShowStatus(); // When a cap touch button is pressed, show status (number of whistles left) immediately
+        noButtonPressTime = 0; // Keep track of how much time since a cap touch button was pressed
     } else {
         if (noButtonPressTime < 250)
             noButtonPressTime++;
+        // After showing the status, blink the LED and shut it off to conserve power
         if ((noButtonPressTime > STATUS_BLINK_THRESH
                 && noButtonPressTime < STATUS_CANCEL_THRESH2)
                 || noButtonPressTime < STATUS_CANCEL_THRESH) {
@@ -83,25 +85,25 @@ void MainLoop(uint8_t capPushA, uint8_t capPushB, uint16_t tempSensor) {
     downSample++;
     if (downSample == 4) {
         downSample = 0;
-        uint16_t val = tempSensor;
+        uint16_t val = tempSensor; // Process thermistor samples once every ~0.25 sec
 
-        uint32_t val_lo = mafilt(tempLow, val, NLOW);
-        int32_t val_hi = (NHI) * val_lo - mafilt(tempHi, val_lo, NHI);
+        uint32_t val_lo = mafilt(tempLow, val, NLOW); // low-pass filter the thermistor (ADC) readings to suppress noise
+        int32_t val_hi = (NHI) * val_lo - mafilt(tempHi, val_lo, NHI); // high-pass filter to detect only changes in temperature
         if (val > 100 && val_hi < -1000) {
-            // detected whistle
+            // detect whistle when the temperature is high (> ~100C), and the temperature has sharply fallen
             whistleOneCount++;
         } else {
-            if (whistleOneCount > 12) {
+            if (whistleOneCount > 12) { // See if the temperature fell for a duration greater than 3 secs before rising again
                 // Whistle detection complete !
                 //sb(128);
-                if (whistleCount > 0) {
+                if (whistleCount > 0) { 
                     whistleCount--;
-                    if (whistleCount == 0) {
-                        beepTime = 767;
+                    if (whistleCount == 0) { // Number of whistles == Target number of whistles ?
+                        beepTime = 767; // Start beeping the buzzer for 45 seconds or until the user touches a cap touch button
                     }
                 }
-                ShowStatus();
-                noButtonPressTime = 0;
+                ShowStatus(); // after each whistle, show how many whistles are left on the LEDs
+                noButtonPressTime = 0; // To blink the LED, invoke the same code that shows status when a cap button is touched
             }
             whistleOneCount = 0;
         }
@@ -110,7 +112,7 @@ void MainLoop(uint8_t capPushA, uint8_t capPushB, uint16_t tempSensor) {
 
     if (beepTime > 0) {
         if( (beepTime & 0x0F) > 10 ) {
-            BuzzerOn();
+            BuzzerOn(); // Alternately beep the buzzer
         } else {
             BuzzerOff();
         }

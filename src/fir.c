@@ -37,10 +37,10 @@ FIR_SUM_DTYPE mafilt(FIR_DTYPE* arr, FIR_DTYPE newVal, uint8_t n)
 
     for(i=n-1; i > 0; i--)
     {
-        arr[i] = arr[i-1];
+        arr[i] = arr[i-1]; // Shift element into a circular buffer
         sum += arr[i];
     }
-    arr[0] = newVal;
+    arr[0] = newVal; // Latest filtered sample is the sum of the last 'n' samples
     sum+= arr[0];
 
     return sum;

@@ -37,26 +37,26 @@ uint8_t senseCapPushA() {
     uint8_t status = 0;
     uint16_t val = readCapPushA();
     uint16_t filt = mafilt(capPushABuf, val, N_CAP_PUSH_BUF);
-    int16_t hp_filt = N_CAP_PUSH_BUF * val - filt;
+    int16_t hp_filt = N_CAP_PUSH_BUF * val - filt; // high pass filter the frequency of the cap touch relaxation osc.
 
     //sval(hp_filt);
 
-    if (hp_filt < -THRESH1) {
+    if (hp_filt < -THRESH1) { // Fire 'onPress' event when relaxation osc. frequency falls rapidly
         if (!backOffA0) {
             status = 1;
-            backOffA0 = 1;
+            backOffA0 = 1; // don't fire 'onPress' again until relaxation osc. frequency stops falling
         }
     } else if (hp_filt > -THRESH2) {
-        backOffA0 = 0;
+        backOffA0 = 0; // Now, 'onPress' can be fired again
     }
 
-    if (hp_filt > THRESH1) {
+    if (hp_filt > THRESH1) { // Fire 'onRelease' event when relaxation osc. frequency falls rapidly
         if (!backOffA1) {
             status = 2;
-            backOffA1 = 1;
+            backOffA1 = 1; // don't fire 'onRelease' again until relaxation osc. frequency stops falling
         }
     } else if (hp_filt < THRESH2) {
-        backOffA1 = 0;
+        backOffA1 = 0; // Now, 'onRelease' can be fired again
     }
 
     return status;

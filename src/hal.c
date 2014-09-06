@@ -41,7 +41,7 @@ void ISR_trap(void) {
 }
 
 /*
-// If you're using TI's Code Composer for MSP430, replace the above two ISRs with the following ones in comments.
+// If you're using TI's Code Composer for MSP430, replace the above two ISRs with the following ones.
 
 #pragma vector=WDT_VECTOR,ADC10_VECTOR
 __interrupt void ISR(void) {
