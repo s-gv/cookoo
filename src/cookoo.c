@@ -92,7 +92,7 @@ void MainLoop(uint8_t capPushA, uint8_t capPushB, uint16_t tempSensor, uint16_t 
         uint16_t val = tempSensor; // Process thermistor samples once every ~0.25 sec
 
         uint32_t val_lo = mafilt(tempLow, val, NLOW); // low-pass filter the thermistor (ADC) readings to suppress noise
-        sb(val_lo >> 4);
+        //sb(val_lo >> 4);
         if(val_lo > OVER_TEMP_THRESH_HI)
             overTemp = 1;
         else if(val_lo < OVER_TEMP_THRESH_LO)
