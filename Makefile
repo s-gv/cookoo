@@ -29,7 +29,7 @@
 
 TARGET = msp430cookoo
 
-MCU = msp430g2553 # or MSP430G2232
+MCU = msp430g2553 # or msp430g2232
 
 PROGRAMMER = rf2500 # Use TI MSP430 launchpad as flash programmer
 
