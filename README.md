@@ -6,11 +6,11 @@ Pressure cooker whistle counter
 Dependencies
 ------------
 
-- MSP GCC (only if you want to re-compile)
+- MSPGCC (only if you want to re-compile)
 - Flash Programmer (TI Launchpad will do)
-- Flash Programmer Tool (TI Code Composer Studio / FET-Pro430 / mspdebug)
+- Flash Programmer Tool (TI Code Composer Studio / FET-Pro430)
 
-On Ubuntu 12.04, MSP GCC can be installed with `sudo apt-get install binutils-msp430 gcc-msp430 msp430-libc mspdebug`
+On Ubuntu 12.04, MSPGCC can be installed with `sudo apt-get install binutils-msp430 gcc-msp430 msp430-libc mspdebug`
 
 How-to-use
 ----------

@@ -52,9 +52,8 @@ OBJS := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 all: $(BINDIR)/$(TARGET).hex
 
 program: $(BINDIR)/$(TARGET).hex
-	$(info *** Need to be root to access the MSP430 programmer unless you have added a suitable udev rule ***)
-	sudo mspdebug $(PROGRAMMER) "prog $(BINDIR)/$(TARGET).hex" exit
-	#For different serial port, say /dev/ttyUSB0: mspdebug -d /dev/ttyUSB0 $(PROGRAMMER) "prog $(BINDIR)/$(TARGET).hex" exit
+	# As of Sept. 2014, MSP430G2232 is not supported by mspdebug
+	mspdebug $(PROGRAMMER) "prog $(BINDIR)/$(TARGET).hex" exit
 
 $(BINDIR)/$(TARGET).hex: $(BINDIR)/$(TARGET).elf
 	$(OBJCOPY) -O ihex $< $@
