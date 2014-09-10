@@ -52,8 +52,7 @@ OBJS := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 all: $(BINDIR)/$(TARGET).hex
 
 program: $(BINDIR)/$(TARGET).hex
-	# As of Sept. 2014, MSP430G2232 is not supported by mspdebug
-	mspdebug $(PROGRAMMER) "prog $(BINDIR)/$(TARGET).hex" exit
+	sudo mspdebug $(PROGRAMMER) "prog $(BINDIR)/$(TARGET).hex" exit
 
 $(BINDIR)/$(TARGET).hex: $(BINDIR)/$(TARGET).elf
 	$(OBJCOPY) -O ihex $< $@
