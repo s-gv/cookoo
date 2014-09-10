@@ -30,27 +30,21 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "hal.h"
 
-__attribute__((interrupt(WDT_VECTOR),interrupt(ADC10_VECTOR))) 
-void ISR(void) {
+static void __attribute__((__interrupt__(WDT_VECTOR))) WDT_ISR(void) {
     LPM3_EXIT; // Return to active mode
 }
 
-__attribute__((interrupt(PORT1_VECTOR),interrupt(PORT2_VECTOR),interrupt(NMI_VECTOR),interrupt(USI_VECTOR),interrupt(TIMER0_A1_VECTOR),interrupt(TIMER0_A0_VECTOR))) 
-void ISR_trap(void) {
-    WDTCTL = 0; // Write to WDT with a wrong password to reset CPU
+static void __attribute__((__interrupt__(ADC10_VECTOR))) ADC10_ISR(void) {
+    LPM3_EXIT; // Return to active mode
 }
 
+
 /*
-// If you're using TI's Code Composer for MSP430, replace the above two ISRs with the following ones.
+// If you're using TI's Code Composer for MSP430, replace the above two ISRs with the following.
 
 #pragma vector=WDT_VECTOR,ADC10_VECTOR
 __interrupt void ISR(void) {
 	LPM3_EXIT; // Return to active mode
-}
-
-#pragma vector=PORT1_VECTOR,PORT2_VECTOR,NMI_VECTOR,USI_VECTOR,TIMER0_A1_VECTOR,TIMER0_A0_VECTOR
-__interrupt void ISR_trap(void) {
-	WDTCTL = 0; // Write to WDT with a wrong password to reset CPU
 }
 */
 
