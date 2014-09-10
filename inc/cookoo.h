@@ -40,9 +40,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define STATUS_CANCEL_THRESH 28 // When no activity, waits for this time before shutting off status
 #define STATUS_BLINK_THRESH 31 // When no activity, waits upto this time to blink status.
 #define STATUS_CANCEL_THRESH2 40 // When no activity, shuts off status beyond this time
+#define BATTERY_LOW_COUNT_THRESH 5 // When the battery is low, wait for this time before disabling the device
+#define BATTERY_LOW_THRESH 850
+
+#define NLOW 4
+#define NHI 32
+
+#define OVER_TEMP_THRESH_LO (700*NLOW)
+#define OVER_TEMP_THRESH_HI (715*NLOW)
 
 // This function gets called once every 0.1 sec
-void MainLoop(uint8_t capPushA, uint8_t capPushB, uint16_t tempSensor);
+void MainLoop(uint8_t capPushA, uint8_t capPushB, uint16_t tempSensor, uint16_t battery);
 
 void ShowStatus(); // Show current status (number of whistles yet to be done)
 void CancelStatus(); // Turn off status LEDs

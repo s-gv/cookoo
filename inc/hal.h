@@ -48,6 +48,8 @@ void EnableInterrupts(); // Do after all other inits are done
 void InitCapPushButtons();
 
 // Call in the main loop
+uint16_t ReadBattery(); // With 1.5v band-gap, VCC/2 is read. 
+
 void BuzzerOn();
 void BuzzerOff();
 

@@ -37,7 +37,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "hal.h"
 
 int main(void) {
-    uint16_t tempSensor;
+    uint16_t tempSensor, battery;
     uint8_t capPushA, capPushB;
 
     InitWDT();
@@ -53,10 +53,11 @@ int main(void) {
         capPushA = senseCapPushA();
         capPushB = senseCapPushB();
         tempSensor = ReadTemp();
+        battery = ReadBattery();
 
         SetupWDTToWakeUpCPU();
 
-        MainLoop(capPushA, capPushB, tempSensor);
+        MainLoop(capPushA, capPushB, tempSensor, battery);
 
         Sleep(); // Each Sleep() sleeps for about 16 ms at 32 kHz before waking
         Sleep();

@@ -31,15 +31,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "cookoo.h"
 #include "fir.h"
 
-#define NLOW 4
-#define NHI 32
-
 uint8_t whistleCount, time, noButtonPressTime;
 uint8_t downSample;
 uint8_t whistleOneCount;
 uint16_t beepTime;
 uint16_t tempLow[NLOW];
 uint16_t tempHi[NHI];
+uint8_t batteryLowCounter;
+uint8_t overTemp;
 
 void ShowStatus() {
     uint8_t i;
@@ -52,13 +51,18 @@ void CancelStatus() {
     AllLEDOff();
 }
 
-void MainLoop(uint8_t capPushA, uint8_t capPushB, uint16_t tempSensor) {
+void MainLoop(uint8_t capPushA, uint8_t capPushB, uint16_t tempSensor, uint16_t battery) {
+    if (battery < BATTERY_LOW_THRESH) {
+        //About 2.5v
+        if (batteryLowCounter < 200)
+            batteryLowCounter++;
+    }
     if ((capPushA == 1) || (capPushB == 1)) {
         beepTime = 0; // Stop beeping the buzzer when the user touches either of the capacitive touch buttons
         if (noButtonPressTime < STATUS_CANCEL_THRESH) { // Was a cap touch button pressed recently ?
             // If yes, this press must have been to increase (button A) or decrease (button B) the whistle count
             if (capPushA == 1) {
-                if (whistleCount < MAX_WHISTLE_COUNT) {
+                if (whistleCount < MAX_WHISTLE_COUNT && batteryLowCounter < BATTERY_LOW_COUNT_THRESH) {
                     whistleCount++; // increase the target whistle count
                 }
             } else if (capPushB == 1) {
@@ -88,8 +92,14 @@ void MainLoop(uint8_t capPushA, uint8_t capPushB, uint16_t tempSensor) {
         uint16_t val = tempSensor; // Process thermistor samples once every ~0.25 sec
 
         uint32_t val_lo = mafilt(tempLow, val, NLOW); // low-pass filter the thermistor (ADC) readings to suppress noise
+        sb(val_lo >> 4);
+        if(val_lo > OVER_TEMP_THRESH_HI)
+            overTemp = 1;
+        else if(val_lo < OVER_TEMP_THRESH_LO)
+            overTemp = 0;
+
         int32_t val_hi = (NHI) * val_lo - mafilt(tempHi, val_lo, NHI); // high-pass filter to detect only changes in temperature
-        if (val > 100 && val_hi < -1000) {
+        if (val > 400 && val_hi < -1000) {
             // detect whistle when the temperature is high (> ~100C), and the temperature has sharply fallen
             whistleOneCount++;
         } else {
@@ -120,5 +130,11 @@ void MainLoop(uint8_t capPushA, uint8_t capPushB, uint16_t tempSensor) {
     } else {
         BuzzerOff();
     }
+
+    if(overTemp)
+        BuzzerOn();
+
+    //sb(battery >> 2);
+    //sb(tempSensor >> 2);
 
 }

@@ -42,8 +42,8 @@ CC = msp430-gcc
 OBJCOPY = msp430-objcopy
 SIZE = msp430-size
 
-CFLAGS = -mmcu=$(MCU) -Wall -Wunused -O2 -I$(INCDIR)
-LFLAGS = -mmcu=$(MCU) -O2
+CFLAGS = -mmcu=$(MCU) -Wall -Wunused -Os -I$(INCDIR)
+LFLAGS = -mmcu=$(MCU) -Os
 
 SRCS := $(wildcard $(SRCDIR)/*.c)
 INCS := $(wildcard $(INCDIR)/*.h)

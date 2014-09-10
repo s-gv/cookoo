@@ -44,7 +44,7 @@ static void __attribute__((__interrupt__(ADC10_VECTOR))) ADC10_ISR(void) {
 
 #pragma vector=WDT_VECTOR,ADC10_VECTOR
 __interrupt void ISR(void) {
-	LPM3_EXIT; // Return to active mode
+    LPM3_EXIT; // Return to active mode
 }
 */
 
@@ -338,6 +338,8 @@ uint16_t ReadTemp() {
     uint16_t value;
 
     P1OUT |= (1 << 5); // Turn ON power to the resistor divider
+    ADC10CTL1 = INCH_4 + ADC10DIV_3;
+    ADC10CTL0 = SREF_0 + ADC10SHT_3 + REFON + ADC10ON + ADC10IE;
     ADC10CTL0 |= ENC; // Enable ADC
     ADC10CTL0 |= ADC10SC; // Sampling and conversion start
     LPM3; // Goto sleep
@@ -383,4 +385,18 @@ void BuzzerOn() {
 }
 void BuzzerOff() {
     P1OUT &= ~(1 << 0);
+}
+
+uint16_t ReadBattery() {
+    uint16_t value;
+
+    ADC10CTL1 = INCH_11 + ADC10DIV_3;
+    ADC10CTL0 = SREF_1 + ADC10SHT_3 + REFON + ADC10ON + ADC10IE;
+    ADC10CTL0 |= ENC;
+    ADC10CTL0 |= ADC10SC; // Sampling and conversion start
+    LPM3; // Goto sleep
+    value = ADC10MEM;
+    ADC10CTL0 &= ~ENC; // Disable ADC
+
+    return value;
 }
