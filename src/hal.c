@@ -84,8 +84,6 @@ void InitCapPush() {
 }
 
 void InitADC() {
-    ADC10CTL1 = INCH_4 + ADC10DIV_3;
-    ADC10CTL0 = SREF_0 + ADC10SHT_3 + ADC10ON + ADC10IE;
     ADC10AE0 |= BIT4; //ADC Input pin P1.4
     P1DIR |= (1 << 5); // P1.5 is connected to upper side of resistor divider
     P1OUT &= ~(1 << 5); // Turn off power to the resistor divider
@@ -334,21 +332,6 @@ void SetupWDTToWakeUpCPU(uint8_t clkdiv) {
     WDTCTL = WDTPW | WDTTMSEL | WDTCNTCL | WDTSSEL | clkdiv;
 }
 
-uint16_t ReadTemp() {
-    uint16_t value;
-
-    P1OUT |= (1 << 5); // Turn ON power to the resistor divider
-    ADC10CTL1 = INCH_4 + ADC10DIV_3;
-    ADC10CTL0 = SREF_0 + ADC10SHT_3 + REFON + ADC10ON + ADC10IE;
-    ADC10CTL0 |= ENC; // Enable ADC
-    ADC10CTL0 |= ADC10SC; // Sampling and conversion start
-    LPM3; // Goto sleep
-    value = ADC10MEM;
-    ADC10CTL0 &= ~ENC; // Disable ADC
-    P1OUT &= ~(1 << 5); // Turn off power to the resistor divider
-
-    return value;
-}
 uint16_t readCapPush() {
     uint16_t val;
 
@@ -387,16 +370,30 @@ void BuzzerOff() {
     P1OUT &= ~(1 << 0);
 }
 
+uint16_t ReadTemp() {
+    uint16_t value;
+
+    P1OUT |= (1 << 5); // Turn ON power to the resistor divider
+    ADC10CTL1 = INCH_4 + ADC10DIV_3;
+    ADC10CTL0 = SREF_0 + ADC10SHT_3 + ADC10ON + ADC10IE + ENC + ADC10SC; // Sampling and conversion start
+    LPM3; // Goto sleep
+    value = ADC10MEM;
+    ADC10CTL0 &= ~ENC; // Disable ADC
+    P1OUT &= ~(1 << 5); // Turn off power to the resistor divider
+
+    return value;
+}
+
 uint16_t ReadBattery() {
     uint16_t value;
 
     ADC10CTL1 = INCH_11 + ADC10DIV_3;
-    ADC10CTL0 = SREF_1 + ADC10SHT_3 + REFON + ADC10ON + ADC10IE;
-    ADC10CTL0 |= ENC;
-    ADC10CTL0 |= ADC10SC; // Sampling and conversion start
+    ADC10CTL0 = SREF_1 + ADC10SHT_3 + REFON + ADC10ON + ADC10IE; // Turn on reference
+    __delay_cycles(30); // Wait while the reference settles (30 uS)
+    ADC10CTL0 |= ENC + ADC10SC; // Sampling and conversion start
     LPM3; // Goto sleep
     value = ADC10MEM;
-    ADC10CTL0 &= ~ENC; // Disable ADC
+    ADC10CTL0 &= ~(ENC + ADC10ON + REFON); // Disable ADC
 
     return value;
 }

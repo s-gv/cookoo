@@ -50,7 +50,6 @@ int main(void) {
     InitCapPush();
     
     EnableInterrupts();
-    while(1);
     while (1) {
         /*
         capPushB = senseCapPushB(); 
@@ -61,9 +60,8 @@ int main(void) {
         */
         it--;
         if(it == 0) {
-            it = 4;
-            capPushA = senseCapPushA();
-            capPushB = senseCapPushB();
+            it = 1;
+            tempSensor = ReadTemp();
         }
         SetupWDTToWakeUpCPU(2); // Wake up in 16 mS
         Sleep();
