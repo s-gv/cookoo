@@ -3,3 +3,15 @@ Cap push osc. read current - 208 uA
 LPM0 (active mode) - 443 uA
 Continuous ADC with analog in floating (temp. sensor without reference Vg) - 560 uA
 Continouous ADC to read battery (internal 1.5v reference used) - 1.2 mA
+
+
+Average current with temp. ADC sampled once in 16 ms - 7.8 uA
+Average current with battery ADC sampled once in 16 ms - 12.5 uA
+
+Average current with whole program at 68 mS - 24 uA
+
+Assuming a 20 mA buzzer runs at 70% duty cycle for 30 seconds a day, avg. buzzer current - 5 uA
+
+Assuming that LEDs worth 10 mA operate for 20 seconds a day. LED current - 2.3 uA
+
+Total avg. current = 31.3 uA. A CR2032 battery will last 266 days.
