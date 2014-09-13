@@ -52,7 +52,7 @@ OBJS := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 all: $(BINDIR)/$(TARGET).hex
 
 program: $(BINDIR)/$(TARGET).hex
-	sudo mspdebug $(PROGRAMMER) "prog $(BINDIR)/$(TARGET).hex" exit
+	mspdebug $(PROGRAMMER) "prog $(BINDIR)/$(TARGET).hex" "verify $(BINDIR)/$(TARGET).hex" exit
 
 $(BINDIR)/$(TARGET).hex: $(BINDIR)/$(TARGET).elf
 	$(OBJCOPY) -O ihex $< $@
