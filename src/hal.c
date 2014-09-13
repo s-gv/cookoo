@@ -79,8 +79,8 @@ void InitLED() {
     AllLEDOff();
 }
 
-void StopWDT() {
-    WDTCTL = WDTPW | WDTHOLD;       // Stop watchdog timer
+void InitCapPush() {
+    P2DIR |= (1 << 1) | (1 << 0); // P2.0 and P2.1 are cap touch pins
 }
 
 void InitADC() {
@@ -330,8 +330,8 @@ void AllLEDToggle() {
         LEDToggle(i);
 }
 
-void SetupWDTToWakeUpCPU() {
-    WDTCTL = WDTPW | WDTTMSEL | WDTCNTCL | WDTSSEL | WDTIS1; // About 16 ms with 32 kHz clock
+void SetupWDTToWakeUpCPU(uint8_t clkdiv) {
+    WDTCTL = WDTPW | WDTTMSEL | WDTCNTCL | WDTSSEL | clkdiv;
 }
 
 uint16_t ReadTemp() {
@@ -363,11 +363,11 @@ uint16_t readCapPush() {
 
 uint16_t readCapPushA() {
     uint16_t val;
-
+    
     P2SEL2 |= (1 << 1); // P2.1 is the capacitive touch sensor
     val = readCapPush();
     P2SEL2 &= ~(1 << 1);
-
+    
     return val;
 }
 

@@ -38,14 +38,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // Call once before the main loop
 void InitWDT();
-void InitCLOCK();
+void InitCLOCK(); // DCO is configured at 1 MHz, and ACLK for WDT is configured to 32.768 kHz
 void InitUART();
 void InitLED();
 void InitBuzzer();
-void StopWDT();
 void InitADC();
+void InitCapPush();
 void EnableInterrupts(); // Do after all other inits are done
-void InitCapPushButtons();
 
 // Call in the main loop
 uint16_t ReadBattery(); // With 1.5v band-gap, VCC/2 is read. 
@@ -53,7 +52,7 @@ uint16_t ReadBattery(); // With 1.5v band-gap, VCC/2 is read.
 void BuzzerOn();
 void BuzzerOff();
 
-void SetupWDTToWakeUpCPU(); // If CPU is sleeping, it is woken up once after about 16 ms at 32 kHz
+void SetupWDTToWakeUpCPU(uint8_t clkdiv); // clkdiv: 0=>/32768, 1=>/8192, 2=>/512, 3=>/64
 
 uint16_t readCapPushA(); // read capacitive push button A (returns 1 when button has just been pushed)
 uint16_t readCapPushB(); // read capacitive push button B (returns 1 when button has just been pushed)

@@ -39,6 +39,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 int main(void) {
     uint16_t tempSensor, battery;
     uint8_t capPushA, capPushB;
+    uint8_t it=1;
 
     InitWDT();
     InitCLOCK();
@@ -46,22 +47,25 @@ int main(void) {
     InitLED();
     InitADC();
     InitBuzzer();
-
+    InitCapPush();
+    
     EnableInterrupts();
-
+    while(1);
     while (1) {
-        capPushA = senseCapPushA();
-        capPushB = senseCapPushB();
+        /*
+        capPushB = senseCapPushB(); 
         tempSensor = ReadTemp();
-        battery = ReadBattery();
-
-        SetupWDTToWakeUpCPU();
-
-        MainLoop(capPushA, capPushB, tempSensor, battery);
-
-        Sleep(); // Each Sleep() sleeps for about 16 ms at 32 kHz before waking
-        Sleep();
-        Sleep();
+        battery = ReadBattery(); 
+        
+        //MainLoop(capPushA, capPushB, tempSensor, battery);
+        */
+        it--;
+        if(it == 0) {
+            it = 4;
+            capPushA = senseCapPushA();
+            capPushB = senseCapPushB();
+        }
+        SetupWDTToWakeUpCPU(2); // Wake up in 16 mS
         Sleep();
     }
     return 0;
