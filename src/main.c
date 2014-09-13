@@ -62,6 +62,7 @@ int main(void) {
         if(it == 0) {
             it = 1;
             tempSensor = ReadTemp();
+            battery = ReadBattery(); 
         }
         SetupWDTToWakeUpCPU(2); // Wake up in 16 mS
         Sleep();

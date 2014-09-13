@@ -388,12 +388,13 @@ uint16_t ReadBattery() {
     uint16_t value;
 
     ADC10CTL1 = INCH_11 + ADC10DIV_3;
-    ADC10CTL0 = SREF_1 + ADC10SHT_3 + REFON + ADC10ON + ADC10IE; // Turn on reference
+    ADC10CTL0 = SREF_1 + ADC10SHT_3 + REFON + ADC10ON + ADC10IE; // Turn on ADC and reference
     __delay_cycles(30); // Wait while the reference settles (30 uS)
     ADC10CTL0 |= ENC + ADC10SC; // Sampling and conversion start
     LPM3; // Goto sleep
     value = ADC10MEM;
-    ADC10CTL0 &= ~(ENC + ADC10ON + REFON); // Disable ADC
+    ADC10CTL0 &= ~ENC; // Disable ADC
+    ADC10CTL0 &= ~REFON; // Power down reference vg
 
     return value;
 }
