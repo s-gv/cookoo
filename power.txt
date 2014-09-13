@@ -1,3 +1,5 @@
 Sleep current - 2 uA
 Cap push osc. read current - 208 uA
 LPM0 (active mode) - 443 uA
+Continuous ADC with analog in floating (temp. sensor without reference Vg) - 560 uA
+Continouous ADC to read battery (internal 1.5v reference used) - 1.2 mA
