@@ -1,0 +1,3 @@
+Sleep current - 2 uA
+Cap push osc. read current - 208 uA
+LPM0 (active mode) - 443 uA
