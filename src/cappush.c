@@ -37,9 +37,11 @@ uint8_t senseCapPushA() {
     uint8_t status = 0;
     uint16_t val = capPushABuf[0];//readCapPushA();
     downSampleA++;
-    if(downSampleIgnoreCountA > 0)
+    if(downSampleIgnoreCountA > 0) {
         downSampleIgnoreCountA--;
-    if(downSampleA == 4 || downSampleIgnoreCountA) {
+        downSampleA = 0;
+    }
+    if(downSampleA == CAP_PUSH_DOWN_SAMPLE_FACTOR || downSampleIgnoreCountA) {
         downSampleA = 0;
         val = readCapPushA();
     }
@@ -72,9 +74,11 @@ uint8_t senseCapPushB() {
     uint8_t status = 0;
     uint16_t val = capPushBBuf[0];//readCapPushB();
     downSampleB++;
-    if(downSampleIgnoreCountB > 0)
+    if(downSampleIgnoreCountB > 0) {
         downSampleIgnoreCountB--;
-    if(downSampleB == 4 || downSampleIgnoreCountB) {
+        downSampleB = 0;
+    }
+    if(downSampleB == CAP_PUSH_DOWN_SAMPLE_FACTOR || downSampleIgnoreCountB) {
         downSampleB = 0;
         val = readCapPushB();
     }
