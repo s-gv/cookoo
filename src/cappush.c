@@ -36,9 +36,9 @@ uint8_t backOffA0, backOffA1, backOffB0, backOffB1, downSampleA, downSampleIgnor
 uint8_t senseCapPushA() {
     uint8_t status = 0;
     uint16_t val = capPushABuf[0];//readCapPushA();
-    downSampleA++;
+    downSampleA++; // down sample the cap touch sensing
     if(downSampleIgnoreCountA > 0) {
-        downSampleIgnoreCountA--;
+        downSampleIgnoreCountA--; // A while after a button is touched, start down-sampling again
         downSampleA = 0;
     }
     if(downSampleA == CAP_PUSH_DOWN_SAMPLE_FACTOR || downSampleIgnoreCountA) {
@@ -50,7 +50,7 @@ uint8_t senseCapPushA() {
     //sval(hp_filt);
 
     if (hp_filt < -THRESH1) { // Fire 'onPress' event when relaxation osc. frequency falls rapidly
-        downSampleIgnoreCountA = RAPID_SAMPLE_DURATION; // Keep sensing rapidly for the next 2 secs
+        downSampleIgnoreCountA = RAPID_SAMPLE_DURATION; // Keep sensing rapidly (don't downsample) for the next 2 secs
         if (!backOffA0) {
             status = 1;
             backOffA0 = 1; // don't fire 'onPress' again until relaxation osc. frequency stops falling
