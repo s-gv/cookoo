@@ -34,30 +34,6 @@ void sb(unsigned char c) {
     UARTsb(c);
 }
 
-void ss(char* str) {
-    unsigned char c = *str++;
-    while (c != '\0') {
-        sb(c);
-        c = *str++;
-    }
-}
-void s4hex(unsigned char val) {
-    unsigned char c = val + 0x30;
-    if (val > 9)
-        c += 0x07;
-    sb(c);
-}
-void s16hex(unsigned int val) {
-    unsigned char i, c;
-
-    sb('0');
-    sb('x');
-
-    for (i = 0; i < 4; i++) {
-        c = (val >> 4 * (3 - i)) & 0x0F;
-        s4hex(c);
-    }
-}
 void sval(int16_t val) {
     uint8_t tmp;
     if (val < -126)
