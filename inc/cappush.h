@@ -39,6 +39,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define N_CAP_PUSH_BUF 4
 #define THRESH1 300
 #define THRESH2 50
+#define RAPID_SAMPLE_DURATION 40
 
 // returns 1 when finger has just come close to the electrode
 // returns 2 when the finger has just moved away from the electrode

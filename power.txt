@@ -15,3 +15,6 @@ Assuming a 20 mA buzzer runs at 70% duty cycle for 30 seconds a day, avg. buzzer
 Assuming that LEDs worth 10 mA operate for 20 seconds a day. LED current - 2.3 uA
 
 Total avg. current = 31.3 uA. A CR2032 battery will last 266 days.
+
+Average current with downsampled cap push sensing - 15 uA
+Total avg. current with downsampled cap push sensing - 22.3 uA. A CR2032 battery will last 373 days

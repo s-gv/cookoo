@@ -31,17 +31,24 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "cappush.h"
 
 uint16_t capPushABuf[N_CAP_PUSH_BUF], capPushBBuf[N_CAP_PUSH_BUF];
-uint8_t backOffA0, backOffA1, backOffB0, backOffB1;
+uint8_t backOffA0, backOffA1, backOffB0, backOffB1, downSampleA, downSampleIgnoreCountA, downSampleB, downSampleIgnoreCountB;
 
 uint8_t senseCapPushA() {
     uint8_t status = 0;
-    uint16_t val = readCapPushA();
+    uint16_t val = capPushABuf[0];//readCapPushA();
+    downSampleA++;
+    if(downSampleIgnoreCountA > 0)
+        downSampleIgnoreCountA--;
+    if(downSampleA == 4 || downSampleIgnoreCountA) {
+        downSampleA = 0;
+        val = readCapPushA();
+    }
     uint16_t filt = mafilt(capPushABuf, val, N_CAP_PUSH_BUF);
     int16_t hp_filt = N_CAP_PUSH_BUF * val - filt; // high pass filter the frequency of the cap touch relaxation osc.
-
     //sval(hp_filt);
 
     if (hp_filt < -THRESH1) { // Fire 'onPress' event when relaxation osc. frequency falls rapidly
+        downSampleIgnoreCountA = RAPID_SAMPLE_DURATION; // Keep sensing rapidly for the next 2 secs
         if (!backOffA0) {
             status = 1;
             backOffA0 = 1; // don't fire 'onPress' again until relaxation osc. frequency stops falling
@@ -63,13 +70,21 @@ uint8_t senseCapPushA() {
 }
 uint8_t senseCapPushB() {
     uint8_t status = 0;
-    uint16_t val = readCapPushB();
+    uint16_t val = capPushBBuf[0];//readCapPushB();
+    downSampleB++;
+    if(downSampleIgnoreCountB > 0)
+        downSampleIgnoreCountB--;
+    if(downSampleB == 4 || downSampleIgnoreCountB) {
+        downSampleB = 0;
+        val = readCapPushB();
+    }
     uint16_t filt = mafilt(capPushBBuf, val, N_CAP_PUSH_BUF);
     int16_t hp_filt = N_CAP_PUSH_BUF * val - filt;
 
     //sval(hp_filt);
 
     if (hp_filt < -THRESH1) {
+        downSampleIgnoreCountB = RAPID_SAMPLE_DURATION;
         if (!backOffB0) {
             status = 1;
             backOffB0 = 1;
