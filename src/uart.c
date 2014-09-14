@@ -33,7 +33,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 void sb(unsigned char c) {
     UARTsb(c);
 }
-
 void sval(int16_t val) {
     uint8_t tmp;
     if (val < -126)
