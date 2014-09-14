@@ -61,7 +61,7 @@ $(BINDIR)/$(TARGET).elf: $(OBJS)
 	$(CC) $(LFLAGS) $(OBJS) -o $@
 	$(SIZE) $(BINDIR)/$(TARGET).elf
 
-$(OBJS): $(OBJDIR)/%.o : $(SRCDIR)/%.c $(INCLUDES)
+$(OBJS): $(OBJDIR)/%.o : $(SRCDIR)/%.c $(INCLUDES) Makefile
 	$(CC) $(CFLAGS) -c $< -o $@
 
 .PHONEY: clean
