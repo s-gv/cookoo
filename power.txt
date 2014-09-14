@@ -16,5 +16,5 @@ Assuming that LEDs worth 10 mA operate for 20 seconds a day. LED current - 2.3 u
 
 Total avg. current = 31.3 uA. A CR2032 battery will last 266 days.
 
-Average current with downsampled cap push sensing - 15 uA
-Total avg. current with downsampled cap push sensing - 22.3 uA. A CR2032 battery will last 373 days
+Average current with 5x downsampled cap push sensing - 13.6 uA
+Total avg. current with 5x downsampled cap push sensing - 20.9 uA. A CR2032 battery will last 398 days
