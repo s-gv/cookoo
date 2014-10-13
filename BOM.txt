@@ -3,7 +3,7 @@ Quantity x Part Number
 
 1x MSP430G2232 (TSSOP 20 pin)
 
-1x CR2032 Coin cell battery
+1x CR2032 Coin cell battery and battery holder
 
 1x Buzzer (through hole, continuous > 80 dB indicator buzzer)
 
