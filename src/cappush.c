@@ -33,6 +33,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 uint16_t capPushABuf[N_CAP_PUSH_BUF], capPushBBuf[N_CAP_PUSH_BUF];
 uint8_t backOffA0, backOffA1, backOffB0, backOffB1, downSampleA, downSampleIgnoreCountA, downSampleB, downSampleIgnoreCountB;
 
+// DRY (Don't Repeat Yourself) principle violated here for performance reasons. 
+
 uint8_t senseCapPushA() {
     uint8_t status = 0;
     uint16_t val = capPushABuf[0];//readCapPushA();
@@ -60,6 +62,8 @@ uint8_t senseCapPushA() {
     }
 
     if (hp_filt > THRESH1) { // Fire 'onRelease' event when relaxation osc. frequency falls rapidly
+        downSampleIgnoreCountA = RAPID_SAMPLE_DURATION; // Keep sensing rapidly (don't downsample) for the next 2 secs
+        downSampleIgnoreCountB = RAPID_SAMPLE_DURATION;
         if (!backOffA1) {
             status = 2;
             backOffA1 = 1; // don't fire 'onRelease' again until relaxation osc. frequency stops falling
@@ -87,8 +91,8 @@ uint8_t senseCapPushB() {
     //sval(hp_filt);
 
     if (hp_filt < -THRESH1) {
+        downSampleIgnoreCountA = RAPID_SAMPLE_DURATION; // Keep sensing rapidly (don't downsample) for the next 2 secs
         downSampleIgnoreCountB = RAPID_SAMPLE_DURATION;
-        downSampleIgnoreCountA = RAPID_SAMPLE_DURATION;
         if (!backOffB0) {
             status = 1;
             backOffB0 = 1;
@@ -98,6 +102,8 @@ uint8_t senseCapPushB() {
     }
 
     if (hp_filt > THRESH1) {
+        downSampleIgnoreCountA = RAPID_SAMPLE_DURATION; // Keep sensing rapidly (don't downsample) for the next 2 secs
+        downSampleIgnoreCountB = RAPID_SAMPLE_DURATION;
         if (!backOffB1) {
             status = 2;
             backOffB1 = 1;
