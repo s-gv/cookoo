@@ -39,6 +39,9 @@ uint16_t tempLow[NLOW];
 uint16_t tempHi[NHI];
 uint8_t batteryLowCounter;
 uint8_t overTemp;
+uint8_t statusChange;
+uint8_t LEDStatus;
+uint8_t lastWhistleCount;
 
 void ShowStatus() {
     uint8_t i;
@@ -46,12 +49,24 @@ void ShowStatus() {
     for (i = 0; i < whistleCount; i++) {
         LEDOn(i);
     }
+    if(LEDStatus == 0 || lastWhistleCount != whistleCount)
+        statusChange = 1;
+    LEDStatus = 1;
+    lastWhistleCount = whistleCount;
 }
 void CancelStatus() {
     AllLEDOff();
+    if(LEDStatus == 1)
+        statusChange = 1;
+    LEDStatus = 0;
 }
 
 void MainLoop(uint8_t capPushA, uint8_t capPushB, uint16_t tempSensor, uint16_t battery) {
+    if(statusChange) { // Don't detect cap touch when the LED status has just changed
+        capPushA = 0;
+        capPushB = 0;
+        statusChange = 0;
+    }
     if (battery < BATTERY_LOW_THRESH) {
         //About 2.5v
         if (batteryLowCounter < 200)
