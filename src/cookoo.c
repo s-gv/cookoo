@@ -114,7 +114,7 @@ void MainLoop(uint8_t capPushA, uint8_t capPushB, uint16_t tempSensor, uint16_t 
             overTemp = 0;
 
         int32_t val_hi = (NHI) * val_lo - mafilt(tempHi, val_lo, NHI); // high-pass filter to detect only changes in temperature
-        if (val > 400 && val_hi < -1000) {
+        if (val > 400 && val_hi < -250) {
             // detect whistle when the temperature is high (> ~100C), and the temperature has sharply fallen
             whistleOneCount++;
         } else {
