@@ -35,8 +35,8 @@ uint8_t whistleCount, time, noButtonPressTime;
 uint8_t downSample;
 uint8_t whistleOneCount;
 uint16_t beepTime;
-uint16_t tempLow[NLOW];
-uint16_t tempHi[NHI];
+uint16_t tempLow[TEMP_LOW_PASS_FILTER_N];
+uint16_t tempHi[TEMP_HI_PASS_FILTER_N];
 uint8_t batteryLowCounter;
 uint8_t overTemp;
 uint8_t statusChange;
@@ -102,29 +102,29 @@ void MainLoop(uint8_t capPushA, uint8_t capPushB, uint16_t tempSensor, uint16_t 
     }
     time++;
     downSample++;
-    if (downSample == 4) {
+    if (downSample == TEMP_DOWNSAMPLE_FACTOR) {
         downSample = 0;
         uint16_t val = tempSensor; // Process thermistor samples once every ~0.25 sec
 
-        uint32_t val_lo = mafilt(tempLow, val, NLOW); // low-pass filter the thermistor (ADC) readings to suppress noise
+        uint32_t val_lo = mafilt(tempLow, val, TEMP_LOW_PASS_FILTER_N); // low-pass filter the thermistor (ADC) readings to suppress noise
         //sb(val_lo >> 4);
         if(val_lo > OVER_TEMP_THRESH_HI)
             overTemp = 1;
         else if(val_lo < OVER_TEMP_THRESH_LO)
             overTemp = 0;
 
-        int32_t val_hi = (NHI) * val_lo - mafilt(tempHi, val_lo, NHI); // high-pass filter to detect only changes in temperature
-        if (val > 400 && val_hi < -250) {
+        int32_t val_hi = (TEMP_HI_PASS_FILTER_N) * val_lo - mafilt(tempHi, val_lo, TEMP_HI_PASS_FILTER_N); // high-pass filter to detect only changes in temperature
+        if (val > MIN_TEMP_WHISTLE_DETECTION && val_hi < -MIN_TEMP_FALL_WHISTLE_DETECTION) {
             // detect whistle when the temperature is high (> ~100C), and the temperature has sharply fallen
             whistleOneCount++;
         } else {
-            if (whistleOneCount > 12) { // See if the temperature fell for a duration greater than 3 secs before rising again
+            if (whistleOneCount > MIN_TEMP_FALL_DURATION_WHISTLE_DETECTION) { // See if the temperature fell for a duration greater than 3 secs before rising again
                 // Whistle detection complete !
                 //sb(128);
                 if (whistleCount > 0) { 
                     whistleCount--;
                     if (whistleCount == 0) { // Number of whistles == Target number of whistles ?
-                        beepTime = 767; // Start beeping the buzzer for 45 seconds or until the user touches a cap touch button
+                        beepTime = WHISTLE_BEEP_TIME; // Start beeping the buzzer for 45 seconds or until the user touches a cap touch button
                     }
                 }
                 ShowStatus(); // after each whistle, show how many whistles are left on the LEDs

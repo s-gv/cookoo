@@ -37,17 +37,25 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define MAX_WHISTLE_COUNT 8
 
+#define TEMP_DOWNSAMPLE_FACTOR 4
+
 #define STATUS_CANCEL_THRESH 28 // When no activity, waits for this time before shutting off status
 #define STATUS_BLINK_THRESH 31 // When no activity, waits upto this time to blink status.
 #define STATUS_CANCEL_THRESH2 40 // When no activity, shuts off status beyond this time
 #define BATTERY_LOW_COUNT_THRESH 5 // When the battery is low, wait for this time before disabling the device
 #define BATTERY_LOW_THRESH 850
 
-#define NLOW 4
-#define NHI 32
+#define TEMP_LOW_PASS_FILTER_N 4
+#define TEMP_HI_PASS_FILTER_N 32
 
-#define OVER_TEMP_THRESH_LO (700*NLOW)
-#define OVER_TEMP_THRESH_HI (715*NLOW)
+#define OVER_TEMP_THRESH_LO (700 * TEMP_LOW_PASS_FILTER_N)
+#define OVER_TEMP_THRESH_HI (715 * TEMP_LOW_PASS_FILTER_N)
+
+#define MIN_TEMP_WHISTLE_DETECTION 400
+#define MIN_TEMP_FALL_WHISTLE_DETECTION 250
+#define MIN_TEMP_FALL_DURATION_WHISTLE_DETECTION 12
+
+#define WHISTLE_BEEP_TIME 767
 
 // This function gets called once every 0.1 sec
 void MainLoop(uint8_t capPushA, uint8_t capPushB, uint16_t tempSensor, uint16_t battery);
