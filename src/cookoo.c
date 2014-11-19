@@ -45,19 +45,20 @@ uint8_t lastWhistleCount;
 
 void ShowStatus() {
     uint8_t i;
-    AllLEDOff();
-    for (i = 0; i < whistleCount; i++) {
-        LEDOn(i);
+    if(LEDStatus == 0 || lastWhistleCount != whistleCount) {
+        statusChange += 1;
+        AllLEDOff();
+        for (i = 0; i < whistleCount; i++) {
+            LEDOn(i);
+        }
     }
-    if(LEDStatus == 0 || lastWhistleCount != whistleCount)
-        statusChange = 1;
     LEDStatus = 1;
     lastWhistleCount = whistleCount;
 }
 void CancelStatus() {
     AllLEDOff();
     if(LEDStatus == 1)
-        statusChange = 1;
+        statusChange += 1;
     LEDStatus = 0;
 }
 
@@ -65,7 +66,7 @@ void MainLoop(uint8_t capPushA, uint8_t capPushB, uint16_t tempSensor, uint16_t 
     if(statusChange) { // Don't detect cap touch when the LED status has just changed
         capPushA = 0;
         capPushB = 0;
-        statusChange = 0;
+        statusChange--;
     }
     if (battery < BATTERY_LOW_THRESH) {
         //About 2.5v
@@ -126,6 +127,7 @@ void MainLoop(uint8_t capPushA, uint8_t capPushB, uint16_t tempSensor, uint16_t 
                     if (whistleCount == 0) { // Number of whistles == Target number of whistles ?
                         beepTime = WHISTLE_BEEP_TIME; // Start beeping the buzzer for 45 seconds or until the user touches a cap touch button
                     }
+                    statusChange += 6; // to prevent false positives in cap touch after a whistle is detected and the LEDs are flashed
                 }
                 ShowStatus(); // after each whistle, show how many whistles are left on the LEDs
                 noButtonPressTime = 0; // To blink the LED, invoke the same code that shows status when a cap button is touched
