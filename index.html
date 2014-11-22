@@ -8,6 +8,22 @@
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <style>
+    	.vidwrapper {
+	    width: 100%; /* whatever width you want */
+	    display: inline-block;
+	    position: relative;
+		}
+		.vidwrapper:after {
+		    padding-top: 56.25%; /* 16:9 ratio */
+		    display: block;
+		    content: '';
+		}
+		.vidmain {
+		    position: absolute;
+		    top: 0; bottom: 0; right: 0; left: 0; /* fill parent */
+		}
+    </style>
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -17,7 +33,7 @@
       <header>
         <h1>Cookoo</h1>
         <p>Pressure cooker whistle counter</p>
-        <img src="cookoo.jpg" alt=""></img>
+        <p><img src="cookoo.jpg" alt=""></img></p>
         <p class="view"><a href="https://github.com/s-gv/cookoo">View the Project on GitHub <small>s-gv/cookoo</small></a></p>
 
 
@@ -29,16 +45,22 @@
       </header>
       <section>
         <h3>
-<a id="cookoo" class="anchor" href="#cookoo" aria-hidden="true"><span class="octicon octicon-link"></span></a>Cookoo</h3>
+<a id="cookoo" class="anchor" href="#cookoo" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is Cookoo?</h3>
 
-<p>Cookoo keeps track of your pressure cooker so you don't have to. Keep it on your cooker and forget about it. Cookoo will tell you when to turn off the gas.</p>
+<p>Cookoo keeps track of your pressure cooker so you don't have to. Keep it on your cooker and forget about it. Cookoo will tell you when to turn off the stove.</p>
 <p>
-<iframe width="100%" height="315px"src="http://www.youtube.com/embed/zaxs5LcubCw" frameborder="0" allowfullscreen></iframe>
+<div class="vidwrapper"><div class="vidmain">
+<iframe width="100%" height="100%" src="http://www.youtube.com/embed/zaxs5LcubCw" frameborder="0" allowfullscreen></iframe>
+</div></div>
 </p>
+<h3>
+<a id="works" class="anchor" href="#works" aria-hidden="true"><span class="octicon octicon-link"></span></a>How does it work?</h3>
+<p>Cookoo monitors the temperature of your cooker. When the cooker whistles, the pressure inside it falls rapidly. This causes a sharp decrease in the temperate, which Cookoo detects. Cookoo alerts you when the cooker has whistled the number of times you had set.</p>
+
 <h3>
 <a id="authors" class="anchor" href="#authors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors</h3>
 
-<p>Cookoo is brought to you by Sagar Gubbi and Dhruv Saxena.</p>
+<p>Sagar Gubbi and Dhruv Saxena.</p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/s-gv">s-gv</a></p>
