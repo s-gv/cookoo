@@ -24,3 +24,4 @@ Notes
 
 - Pour hot glue over the crystal pins, the 22pF caps, and all over the MSP430 pins to prevent moisture from interfering with the low-power 32kHz crystal oscillator
 - The [PCB design](pcb/) included has a minor inconvenience. For the wire-terminated thermistor, SMD0402 pads have been provided (rather than two through-holes)
+- The contact area with the cooker should be at least 1cm x 1cm for efficient heat transfer. To do this, paste the thermistor on the backside of a thin copper sheet.
