@@ -31,19 +31,19 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "cookoo.h"
 #include "fir.h"
 
-uint8_t whistleCount, time, noButtonPressTime;
-uint8_t downSample;
-uint8_t whistleOneCount;
-uint16_t beepTime;
-uint16_t tempLow[TEMP_LOW_PASS_FILTER_N];
-uint16_t tempHi[TEMP_HI_PASS_FILTER_N];
-uint8_t batteryLowCounter;
-uint8_t overTemp;
-uint8_t statusChange;
-uint8_t LEDStatus;
-uint8_t lastWhistleCount;
+static uint8_t whistleCount, time, noButtonPressTime;
+static uint8_t downSample;
+static uint8_t whistleOneCount;
+static uint16_t beepTime;
+static uint16_t tempLow[TEMP_LOW_PASS_FILTER_N];
+static uint16_t tempHi[TEMP_HI_PASS_FILTER_N];
+static uint8_t batteryLowCounter;
+static uint8_t overTemp;
+static uint8_t statusChange;
+static uint8_t LEDStatus;
+static uint8_t lastWhistleCount;
 
-void ShowStatus() {
+static void ShowStatus() {
     uint8_t i;
     if(LEDStatus == 0 || lastWhistleCount != whistleCount) {
         statusChange += 1;
@@ -55,7 +55,7 @@ void ShowStatus() {
     LEDStatus = 1;
     lastWhistleCount = whistleCount;
 }
-void CancelStatus() {
+static void CancelStatus() {
     AllLEDOff();
     if(LEDStatus == 1)
         statusChange += 1;

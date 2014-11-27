@@ -31,7 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef CAPPUSH_H_
 #define CAPPUSH_H_
 
-#include<inttypes.h>
+#include <inttypes.h>
 
 #include "hal.h"
 #include "fir.h"

@@ -60,7 +60,4 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // This function gets called once every 0.1 sec
 void MainLoop(uint8_t capPushA, uint8_t capPushB, uint16_t tempSensor, uint16_t battery);
 
-void ShowStatus(); // Show current status (number of whistles yet to be done)
-void CancelStatus(); // Turn off status LEDs
-
 #endif /* COOKOO_H_ */

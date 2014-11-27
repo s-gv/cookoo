@@ -332,7 +332,7 @@ void SetupWDTToWakeUpCPU(uint8_t clkdiv) {
     WDTCTL = WDTPW | WDTTMSEL | WDTCNTCL | WDTSSEL | clkdiv;
 }
 
-uint16_t readCapPush() {
+static uint16_t readCapPush() {
     uint16_t val;
 
     TACTL = TASSEL_3 | MC_2 | TACLR; // INCLK, Up-mode to 0xFFFF, clear timer

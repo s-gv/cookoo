@@ -30,8 +30,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "cappush.h"
 
-uint16_t capPushABuf[N_CAP_PUSH_BUF], capPushBBuf[N_CAP_PUSH_BUF];
-uint8_t backOffA0, backOffA1, backOffB0, backOffB1, downSampleA, downSampleIgnoreCountA, downSampleB, downSampleIgnoreCountB;
+static uint16_t capPushABuf[N_CAP_PUSH_BUF], capPushBBuf[N_CAP_PUSH_BUF];
+static uint8_t backOffA0, backOffA1, backOffB0, backOffB1, downSampleA, downSampleIgnoreCountA, downSampleB, downSampleIgnoreCountB;
 
 // DRY (Don't Repeat Yourself) principle violated here for performance reasons. 
 
