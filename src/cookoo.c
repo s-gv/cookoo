@@ -140,6 +140,7 @@ void MainLoop(uint8_t capPushA, uint8_t capPushB, uint16_t tempSensor, uint16_t 
     if (beepTime > 0) {
         if( (beepTime & 0x0F) > 10 ) {
             BuzzerOn(); // Alternately beep the buzzer
+            statusChange += 1;
         } else {
             BuzzerOff();
         }
