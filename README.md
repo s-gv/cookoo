@@ -1,7 +1,7 @@
 cookoo
 ======
 
-Cookoo pressure cooker whistle counter that helps you to keep track of your cooker. Keep it on your cooker and forget about it. Cookoo will tell you when to turn off the stove.
+Cookoo is a pressure cooker whistle counter. Keep it on your cooker and forget about it. Cookoo will tell you when to turn off the stove.
 
 Dependencies
 ------------
